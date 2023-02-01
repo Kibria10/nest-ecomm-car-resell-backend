@@ -21,4 +21,31 @@ export class UsersService {
         const user = this.repo.create({email, password}); //create function creates an instance of the user entity
         return this.repo.save(user); //save is used for persisting the user to the database
     }
+
+    findOne(id: number){
+        return this.repo.findOneBy({id}); //findOne is deprecated. findOneBy is the new one and it takes object as an argument.
+    }
+
+    find(email: string){
+        return this.repo.find({
+            where: {email: email}
+        });//find is deprecated as well. It now takes where and relation objects as arguments.
+    }
+
+    async update(id: number, attrs: Partial<User>){
+        const user = await this.findOne(id);
+        if(!user){
+            throw new Error('User not found');
+        }
+        Object.assign(user, attrs);
+        return this.repo.save(user);
+    }
+
+    async remove(id: number){
+        const user = await this.findOne(id);
+        if(!user){
+            throw new Error('User not found');
+        }
+        return this.repo.remove(user);
+    }
 }
