@@ -12,7 +12,7 @@ import { Report } from './reports/report.entity';
       type: 'sqlite',
       database: 'db.sqlite',
       entities: [User, Report],
-      synchronize: true,
+      synchronize: true, // This is for development only. Do not use in production. It runs migrations automatically and we don't have to write migration files manually to change db structure.
     }
   ),
   UsersModule, ReportsModule],
