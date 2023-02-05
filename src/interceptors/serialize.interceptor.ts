@@ -4,8 +4,14 @@ import { map } from "rxjs/operators";
 import { plainToClass } from "class-transformer";
 import { UserDto } from "src/users/dtos/UserDto";
 
+// This is the interface that will be used to specify the type of the DTO that will be used for the outgoing response
+// This is not needed if you are using the DTO directly in the controller
+// This interface is for the Serialize decorator that will take only class types as arguments instead of using "any" type
+interface ClassConstructor {
+    new (...args: any[]): {}
+}
 // This is the decorator that will be used in the controller to specify which DTO to use for the outgoing response
-export function Serialize(dto: any) {
+export function Serialize(dto: ClassConstructor) {
     return UseInterceptors(new SerializeInterceptor(dto));
 }
 

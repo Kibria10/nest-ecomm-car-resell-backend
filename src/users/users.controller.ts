@@ -6,6 +6,7 @@ import { Serialize} from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/UserDto';
 
 @Controller('auth')
+@Serialize(UserDto) // This is the decorator that will be applied in all of the routing methods in this controller for outgoing responses
 export class UsersController {   
     constructor(private usersService: UsersService){}
 
@@ -15,7 +16,6 @@ export class UsersController {
         this.usersService.create(body.email, body.password);
     }
 
-    @Serialize(UserDto)
     @Get('/:id')
     async findUser(@Param('id') id: string){
         console.log('handler is running');
