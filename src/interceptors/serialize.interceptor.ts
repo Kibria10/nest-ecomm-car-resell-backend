@@ -3,10 +3,16 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { plainToClass } from "class-transformer";
 import { UserDto } from "src/users/dtos/UserDto";
+
+// This is the decorator that will be used in the controller to specify which DTO to use for the outgoing response
+export function Serialize(dto: any) {
+    return UseInterceptors(new SerializeInterceptor(dto));
+}
+
 export class SerializeInterceptor implements NestInterceptor {
 
     constructor(private dto: any) { 
-        
+
     }
 
     intercept(context: ExecutionContext, handler: CallHandler): Observable<any> {
