@@ -14,7 +14,7 @@ POST http://localhost:3000/auth/signin
 content-type: application/json
 
 {
-    "email": "hash1@gmail.com",
+    "email": "hash2@gmail.com",
     "password": "asdf"
 }
 
