@@ -4,6 +4,16 @@ POST http://localhost:3000/auth/signup
 content-type: application/json
 
 {
+    "email": "hash2@gmail.com",
+    "password": "asdf"
+}
+
+### Sign in a user
+
+POST http://localhost:3000/auth/signin
+content-type: application/json
+
+{
     "email": "hash1@gmail.com",
     "password": "asdf"
 }
@@ -12,7 +22,7 @@ content-type: application/json
 GET http://localhost:3000/auth/1
 
 ### Find all users with a given email
-GET http://localhost:3000/auth?email=asdf@gmail.com
+GET http://localhost:3000/auth?email=hash1@gmail.com
 
 ### Delete a user with a given Id
 DELETE http://localhost:3000/auth/2
