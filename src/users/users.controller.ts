@@ -5,16 +5,21 @@ import { UsersService } from './users.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/UserDto';
 import { AuthService } from './auth.service';
-
+import { CurrentUser } from './decorators/current-user.decorator';
 @Controller('auth')
 @Serialize(UserDto) // This is the decorator that will be applied in all of the routing methods in this controller for outgoing responses
 export class UsersController {
     constructor(private usersService: UsersService,
         private authService: AuthService) { }
 
+    // @Get('/whoami')
+    // whoAmI(@Session() session: any) {
+    //     return this.usersService.findOne(session.userId);
+    // }
+
     @Get('/whoami')
-    whoAmI(@Session() session: any) {
-        return this.usersService.findOne(session.userId);
+    whoAmI(@CurrentUser() user: UserDto) {
+        return user;
     }
 
     @Post('/signout')
