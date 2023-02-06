@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Session } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Session, UseInterceptors } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
@@ -6,8 +6,12 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/UserDto';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
+import {CurrentUserInterceptor} from './interceptors/current-user.interceptor';
+import { User } from './user.entity';
+
 @Controller('auth')
 @Serialize(UserDto) // This is the decorator that will be applied in all of the routing methods in this controller for outgoing responses
+@UseInterceptors(CurrentUserInterceptor) // This is the interceptor that will be applied in all of the routing methods in this controller for incoming requests
 export class UsersController {
     constructor(private usersService: UsersService,
         private authService: AuthService) { }
@@ -18,7 +22,7 @@ export class UsersController {
     // }
 
     @Get('/whoami')
-    whoAmI(@CurrentUser() user: UserDto) {
+    whoAmI(@CurrentUser() user: User) {
         return user;
     }
 
