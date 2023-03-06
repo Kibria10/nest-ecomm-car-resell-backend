@@ -49,4 +49,21 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('finds one user with the given id', async () => {
+    const user = await controller.findAllUsers('asdf@asdf.com');
+    expect(user.length).toEqual(1);
+    expect(user[0].email).toEqual('asdf@asdf.com');
+  });
+
+  it('finds one user with the given id', async () => {
+    const user = await controller.findUser('1');
+    expect(user).toBeDefined();
+  });
+
+  it('throws an error if user is not found', async () => {
+    fakeUsersService.findOne = () => null;
+    await expect(controller.findUser('1')).rejects.toThrow();
+  });
+
 });
