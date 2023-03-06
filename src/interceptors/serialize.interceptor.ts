@@ -2,7 +2,7 @@ import { UseInterceptors, NestInterceptor, ExecutionContext, CallHandler } from 
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { plainToClass } from "class-transformer";
-import { UserDto } from "src/users/dtos/UserDto";
+import { UserDto } from "../users/dtos/UserDto";
 
 // This is the interface that will be used to specify the type of the DTO that will be used for the outgoing response
 // This is not needed if you are using the DTO directly in the controller

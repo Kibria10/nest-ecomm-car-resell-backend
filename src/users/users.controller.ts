@@ -2,12 +2,13 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Q
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/UserDto';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './user.entity';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
+
 @Controller('auth')
 @Serialize(UserDto) // This is the decorator that will be applied in all of the routing methods in this controller for outgoing responses
 export class UsersController {
