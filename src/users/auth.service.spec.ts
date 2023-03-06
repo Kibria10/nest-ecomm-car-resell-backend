@@ -62,6 +62,15 @@ describe('AuthService', () => {
                 expect(err.message).toEqual('Invalid email');
             });
     });
-    
+
+    it('throws if an invalid password is provided', () => {
+        fakeUsersService.find = () =>
+            Promise.resolve([{ id: 1, email: 'asdf@asdf.com', password: 'asdf' } as User]); //redefine the find method to return an array with one user in it for only this test
+        return service.signin('whateveremail@whatever.com', 'asdf')
+            .catch((err) => {
+                // Handle the error here
+                expect(err.message).toEqual('Invalid password')
+            });
+    });
 
 });
