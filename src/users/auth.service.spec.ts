@@ -5,10 +5,11 @@ import { UsersService } from "./users.service";
 
 describe('AuthService', () => {
     let service: AuthService;
+    let fakeUsersService: Partial<UsersService>;
 
     beforeEach(async () => {
         //create a fake copy of the users service
-        const fakeUsersService: Partial<UsersService> = {
+        fakeUsersService = {
             find: () => Promise.resolve([]),
             create: (email: string, password: string) =>
                 Promise.resolve({ id: 1, email, password } as User)
@@ -32,6 +33,7 @@ describe('AuthService', () => {
         expect(service).toBeDefined();
     });
 
+    //in this test we want the find method to return an empty array
     it('creates a new user with a salted and hashed password', async () => {
         const user = service.signup('asdf@asdf.com', 'asdf');
 
@@ -40,5 +42,17 @@ describe('AuthService', () => {
         expect(salt).toBeDefined(); //making sure that the password was salted
         expect(hash).toBeDefined(); //making sure that the password was hashed
     });
+
+    //in this test we want the find method to return an array with one user in it
+    it('throws an error if user signs up with email that is in use', () => {
+        fakeUsersService.find = () =>
+            Promise.resolve([{ id: 1, email: 'asdf@asdf.com', password: 'asdf' } as User]); //redefine the find method to return an array with one user in it for only this test
+        return service.signup('asdf@asdf.com', 'asdf')
+            .catch((err) => {
+                // Handle the error here
+                expect(err.message).toEqual('Email in use');
+            });
+    });
+    
 
 });
