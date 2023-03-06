@@ -9,10 +9,21 @@ describe('AuthService', () => {
 
     beforeEach(async () => {
         //create a fake copy of the users service
+        const users: User[] = [];
         fakeUsersService = {
-            find: () => Promise.resolve([]),
-            create: (email: string, password: string) =>
-                Promise.resolve({ id: 1, email, password } as User)
+            find: (email: string) => {
+                const filteredUsers = users.filter(user => user.email === email);
+                return Promise.resolve(filteredUsers);
+            },
+            create: (email: string, password: string) => {
+                const user = ({
+                    id: Math.floor(Math.random() * 99999),
+                    email,
+                    password
+                } as User);
+                users.push(user);
+                return Promise.resolve(user);
+            }
         }
         //create a module or a DI container    
         const module = await Test.createTestingModule({
@@ -71,6 +82,21 @@ describe('AuthService', () => {
                 // Handle the error here
                 expect(err.message).toEqual('Invalid password')
             });
+    });
+
+    it('returns a user if correct password is provided', async () => {
+        const email = 'test@example.com';
+        const password = 'password123';
+
+        // Create a user with the given email and password
+        await service.signup(email, password);
+
+        // Call the signin() function with the correct email and password
+        const user = await service.signin(email, password);
+
+        // Assert that the user object is returned and has the correct email
+        expect(user).toBeDefined();
+        expect(user.email).toEqual(email);
     });
 
 });
