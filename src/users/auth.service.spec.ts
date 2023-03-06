@@ -53,6 +53,15 @@ describe('AuthService', () => {
                 expect(err.message).toEqual('Email in use');
             });
     });
+
+    //in this case we want the find method to return an empty array, so we use the default find method defined inside the beforeEach function
+    it('throws if signin is called with an unused email', () => {
+        return service.signin('asdf@asdf.com', 'asdf')
+            .catch((err) => {
+                // Handle the error here
+                expect(err.message).toEqual('Invalid email');
+            });
+    });
     
 
 });
